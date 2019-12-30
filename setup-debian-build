@@ -1,0 +1,19 @@
+#!/bin/sh
+SETUPROOT=$(pwd)
+ISARPATCHES=${SETUPROOT}/isar-patches
+# First apply the patches to ISAR
+if [ -d ${ISARPATCHES} ]; then
+    cd ${SETUPROOT}/isar
+    git reset --hard
+    git apply ${ISARPATCHES}/*
+    cd ${SETUPROOT}
+fi
+TEMPLATECONF=${SETUPROOT}/meta-pine64/conf
+. ./isar/isar-init-build-env $1
+bblayerconf=${BUILDDIR}/conf/bblayers.conf
+for conf in `find ${SETUPROOT} -maxdepth 3 -name layer.conf`
+do
+    conf=${conf%%/conf/layer.conf}
+    conf="BBLAYERS += \"${conf}\""
+    grep -qxF "${conf}" "${bblayerconf}" || echo "${conf}" >> "${bblayerconf}"
+done
