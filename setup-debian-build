@@ -8,7 +8,7 @@ if [ -d ${ISARPATCHES} ]; then
     git apply ${ISARPATCHES}/*
     cd ${SETUPROOT}
 fi
-TEMPLATECONF=${SETUPROOT}/${1}/conf
+TEMPLATECONF=${SETUPROOT}/isar/meta-isar/conf
 . ./isar/isar-init-build-env ${2}
 bblayerconf=${BUILDDIR}/conf/bblayers.conf
 for conf in `find ${SETUPROOT} -maxdepth 3 -name layer.conf`
